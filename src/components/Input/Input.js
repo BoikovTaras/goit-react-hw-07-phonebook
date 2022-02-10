@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import inputActions from '../../redux/input/input-actions';
 
 import { nanoid } from 'nanoid';
@@ -9,30 +9,7 @@ import s from './Input.module.css';
 function Input({ contacts, addContact }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const dispatch = useDispatch();
   const contactsArray = useSelector(state => state.app.contacts);
-
-  useEffect(() => {
-    const getContacts = localStorage.getItem('contacts');
-    const contactArr = JSON.parse(getContacts);
-    if (contactArr) {
-      contactArr.map(localContacts => {
-        if (
-          contacts.some(contact => {
-            return contact.name === localContacts.name;
-          })
-        ) {
-          return true;
-        }
-        return dispatch(addContact(localContacts));
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contactsArray]);
-
   const addName = v => setName(v.currentTarget.value);
   const addNumber = v => setNumber(v.currentTarget.value);
 
